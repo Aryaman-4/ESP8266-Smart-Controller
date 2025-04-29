@@ -1,0 +1,221 @@
+Setup Guide for ESP8266 Smart Controller
+This guide provides detailed instructions for setting up and using the ESP8266 Smart Controller project.
+Step 1: Hardware Setup
+Required Components
+
+ESP8266 board (NodeMCU, Wemos D1 Mini, or similar)
+Micro USB cable
+Optional:
+
+LEDs (for GPIO 4 and 5)
+Resistors (220-330 ohm) for LEDs
+Breadboard and jumper wires
+
+
+
+Hardware Connections
+Basic Setup
+
+Connect the ESP8266 to your computer using the micro USB cable
+
+Testing with LEDs (Optional)
+
+Connect an LED to GPIO 4:
+
+LED anode (longer leg) → 220-330 ohm resistor → GPIO 4
+LED cathode (shorter leg) → GND
+
+
+Connect an LED to GPIO 5:
+
+LED anode (longer leg) → 220-330 ohm resistor → GPIO 5
+LED cathode (shorter leg) → GND
+
+
+
+Connection Diagram
+ESP8266 NodeMCU
++------------+
+|            |
+|         D1 |---(resistor)---(LED)---GND
+|         D2 |---(resistor)---(LED)---GND
+|            |
++------------+
+Note: D1 corresponds to GPIO 5 and D2 corresponds to GPIO 4 on most NodeMCU boards.
+Step 2: Software Setup
+Installing Arduino IDE
+
+Download and install the Arduino IDE from arduino.cc
+Launch the Arduino IDE
+
+Installing ESP8266 Board Package
+
+Open Arduino IDE
+Go to File > Preferences
+In the "Additional Boards Manager URLs" field, add:
+http://arduino.esp8266.com/stable/package_esp8266com_index.json
+
+Click "OK"
+Go to Tools > Board > Boards Manager
+Search for "ESP8266"
+Install "ESP8266 by ESP8266 Community"
+Click "Close"
+
+Configuring Board Settings
+
+Go to Tools > Board and select your ESP8266 board model (e.g., "NodeMCU 1.0 (ESP-12E Module)")
+Set the following options:
+
+Upload Speed: 115200
+CPU Frequency: 80 MHz
+Flash Size: 4MB (FS:2MB OTA:~1019KB)
+Port: (Select the COM port that appears when your ESP8266 is connected)
+
+
+
+Step 3: Uploading the Code
+Preparing the Code
+
+Open the ESP8266_Smart_Controller.ino file in Arduino IDE
+Modify the WiFi credentials:
+cppconst char* ssid     = "YOUR_WIFI_SSID";
+const char* password = "YOUR_WIFI_PASSWORD";
+
+Save the file
+
+Uploading to ESP8266
+
+Connect your ESP8266 to your computer
+Select the correct port under Tools > Port
+Click the "Upload" button (right arrow icon) or press Ctrl+U
+Wait for the upload to complete
+
+Verification
+
+Open the Serial Monitor by clicking the magnifying glass icon or pressing Ctrl+Shift+M
+Set the baud rate to 115200
+You should see output similar to:
+Connecting to YourWiFiName
+.....
+WiFi connected.
+IP address: 192.168.1.XXX
+
+Take note of the IP address displayed
+
+Step 4: Using the Web Interface
+Accessing the Interface
+
+Open a web browser on any device connected to the same WiFi network
+Enter the IP address shown in the Serial Monitor
+The ESP8266 Smart Controller interface should load
+
+Using the Controls
+
+GPIO 5 Control:
+
+Click "Turn ON" to set GPIO 5 HIGH
+Click "Turn OFF" to set GPIO 5 LOW
+The status indicator will change color based on the current state
+
+
+GPIO 4 Control:
+
+Click "Turn ON" to set GPIO 4 HIGH
+Click "Turn OFF" to set GPIO 4 LOW
+The status indicator will change color based on the current state
+
+
+Built-in LED Control:
+
+Click "Turn ON" to keep the built-in LED on
+Click "Turn OFF" to turn the built-in LED off
+Click "BLINK" to make the built-in LED blink automatically
+
+
+
+Interface Features
+
+Status Indicators: Show the current state of each GPIO
+Device Information: Shows the device IP address
+Real-Time Clock: Displays the current time
+Responsive Design: Works on mobile devices as well as desktop browsers
+
+Step 5: Troubleshooting
+Connection Issues
+
+ESP8266 not connecting to WiFi:
+
+Double-check your WiFi credentials
+Ensure your WiFi router is working properly
+Make sure the ESP8266 is within range of your WiFi network
+
+
+Cannot access web interface:
+
+Verify that you're using the correct IP address
+Ensure your device is connected to the same WiFi network as the ESP8266
+Try restarting the ESP8266
+
+
+
+Upload Issues
+
+Port not appearing:
+
+Install the CH340 driver if using NodeMCU/Wemos
+Try a different USB cable
+Restart Arduino IDE
+
+
+Upload fails:
+
+Press and hold the "FLASH" button on the ESP8266 while uploading
+Verify that the correct board and port are selected
+
+
+
+Step 6: Customizing Your Project
+Adding More Controls
+
+Add new output variables in the code
+Initialize them in the setup function
+Add handlers for the new pins in the client processing section
+Create new cards in the HTML section
+
+Changing the Interface
+
+Modify the CSS in the HTML section to change colors, sizes, etc.
+Add new elements to the HTML structure
+Update the JavaScript for new interactive features
+
+Step 7: Advanced Features
+Setting Up a Static IP
+Add the following code to the setup function:
+cpp// Set static IP address
+IPAddress staticIP(192, 168, 1, 200); // Desired static IP
+IPAddress gateway(192, 168, 1, 1);    // Router IP
+IPAddress subnet(255, 255, 255, 0);   // Subnet mask
+IPAddress dns(8, 8, 8, 8);            // DNS server
+WiFi.config(staticIP, gateway, subnet, dns);
+Adding Password Protection
+
+Add this code to the beginning of the processing section:
+
+cpp// Basic authentication check
+if (!header.startsWith("GET") || header.indexOf("Authorization: Basic") < 0) {
+  client.println("HTTP/1.1 401 Unauthorized");
+  client.println("WWW-Authenticate: Basic realm=\"ESP8266 Smart Controller\"");
+  client.println("Content-Type: text/html");
+  client.println();
+  client.println("<html><body>Authentication required</body></html>");
+  return;
+}
+
+Add more complex authentication as needed
+
+Support
+If you encounter any issues or have questions:
+email: armanmollick08@gmail.com
+Check the troubleshooting section above
+Open an issue on GitHub
+Refer to the ESP8266 documentation at esp8266.com
