@@ -3,6 +3,7 @@ ESP8266 Smart Controller 🌐💡
 ![image](https://github.com/user-attachments/assets/77ef9d48-0005-4a4e-a834-a3ce389f0885)
 
 
+![WhatsApp Image 2025-04-29 at 7 38 11 PM](https://github.com/user-attachments/assets/33dde694-76f0-4699-a369-176e78442718)
 
 
 ✨ Features
